@@ -3,7 +3,7 @@ import { Table, Form } from "react-bootstrap"
 
 function TableDashboard({ users, setSelectedUsers }) {
     const [isChecked, setIsChecked] = React.useState(Array(users.length).fill(false))
-    const [checkAll, setCheckAll] = React.useState(false)
+    const checkRef = React.useRef(null)
 
     React.useEffect(() => {
         const newUsers = []
@@ -19,21 +19,16 @@ function TableDashboard({ users, setSelectedUsers }) {
         })
     }, [isChecked, setSelectedUsers, users])
 
-    React.useEffect(() => {
-        // console.log(isChecked)
-    }, [isChecked])
-    React.useEffect(() => {
-        if (checkAll) setIsChecked(Array(users.length).fill(true))
-        else setIsChecked(Array(users.length).fill(false))
-    }, [checkAll])
-
-    const selectAll = () => {
-        setCheckAll(!checkAll)
+    const selectAll = (e) => {
+        const checkAll = e.target.checked
+        if (checkAll) setIsChecked(Array(isChecked.length).fill(true))
+        else setIsChecked(Array(isChecked.length).fill(false))
     }
 
     const handleCheck = (index) => {
         const newState = isChecked.map((item, ind) => (ind === index ? !item : item))
         setIsChecked(newState)
+        checkRef.current.checked = false
     }
 
     return (
@@ -51,7 +46,7 @@ function TableDashboard({ users, setSelectedUsers }) {
                             <Form.Check
                                 type="checkbox"
                                 id="all"
-                                value={checkAll}
+                                ref={checkRef}
                                 onChange={selectAll}
                             />
                         </td>
@@ -71,7 +66,7 @@ function TableDashboard({ users, setSelectedUsers }) {
                                     <Form.Check
                                         id={index.toString()}
                                         type="checkbox"
-                                        value={isChecked[index]}
+                                        checked={isChecked[index]}
                                         onChange={() => handleCheck(index)}
                                     />
                                 </td>

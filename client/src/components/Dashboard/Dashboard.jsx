@@ -1,11 +1,12 @@
 import React from "react"
+
 import { Container } from "react-bootstrap"
+
 import ButtonsDashboard from "../ButtonsDashboard/ButtonsDashboard"
 import TableDashboard from "../Table_Dashboard/Table_Dashboard"
 
 function Dashboard() {
     const [buttonsState, setButtonsState] = React.useState("")
-    const [collect, setCollect] = React.useState(false)
     const [selectedUsers, setSelectedUsers] = React.useState([])
 
     React.useEffect(() => {
@@ -20,7 +21,7 @@ function Dashboard() {
         <Container className="d-flex flex-column align-center">
             <ButtonsDashboard setButtonsState={setButtonsState} />
             <TableDashboard users={USERS} setSelectedUsers={setSelectedUsers} />
-            <a href="#sss" className={LINK_CLASSSNAME}>
+            <a href="/" className={LINK_CLASSSNAME}>
                 Logout
             </a>
         </Container>
