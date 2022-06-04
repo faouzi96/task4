@@ -1,5 +1,7 @@
 {
     "editor.formatOnSave": true,
     "editor.tabSize": 4,
-    "javascript.format.semicolons": "remove"
+    "javascript.format.semicolons": "remove",
+    "editor.wordWrap": "off",
+    "editor.wordWrapColumn": 160
 }
