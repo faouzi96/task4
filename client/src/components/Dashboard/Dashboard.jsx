@@ -1,24 +1,54 @@
 import React from "react"
 
+import { useLocation, useNavigate } from "react-router-dom"
 import { Container } from "react-bootstrap"
 
 import ButtonsDashboard from "../ButtonsDashboard/ButtonsDashboard"
-import TableDashboard from "../Table_Dashboard/Table_Dashboard"
+import TableDashboard from "../TableDashboard/TableDashboard"
 
 function Dashboard() {
     const [buttonsState, setButtonsState] = React.useState("")
     const [selectedUsers, setSelectedUsers] = React.useState([])
+    const [username, setUsername] = React.useState("")
+    //const [users, setUsers] = React.useState([])
+    const navigate = useNavigate()
+    const dataURL = useLocation()
 
     React.useEffect(() => {
-        if (buttonsState !== "") {
-            console.log(buttonsState)
-            console.log(selectedUsers)
-            setTimeout(() => setButtonsState(""), 100)
+        if (dataURL.state) {
+            setUsername(dataURL.state.username)
+            const option = {
+                method: "GET",
+            }
+            fetch("/api/recuperationData", option).then((response) => {
+                response.json().then((data) => console.log(data))
+            })
+        } else navigate("/")
+    }, [])
+
+    React.useEffect(() => {
+        if (buttonsState !== "" && selectedUsers.length !== 0) {
+            const data = {
+                usersId: selectedUsers,
+                action: buttonsState,
+            }
+            const option = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }
+            fetch("/api/manipulationdata", option).then((response) => {
+                response.json().then((data) => console.log(data))
+            })
         }
+        setTimeout(() => setButtonsState(""), 100)
     }, [buttonsState, selectedUsers])
 
     return (
         <Container className="d-flex flex-column align-center">
+            <h3 className="position-absolute bottom-0 left-0">{username}</h3>
             <ButtonsDashboard setButtonsState={setButtonsState} />
             <TableDashboard users={USERS} setSelectedUsers={setSelectedUsers} />
             <a href="/" className={LINK_CLASSSNAME}>
@@ -31,7 +61,7 @@ function Dashboard() {
 export default Dashboard
 
 const LINK_CLASSSNAME =
-    "badge badge-primary text-primary text-hover mt-5 fs-1 text-decoration-none"
+    "badge badge-primary text-primary text-hover mt-5 fs-1 text-decoration-none "
 
 const USERS = [
     {

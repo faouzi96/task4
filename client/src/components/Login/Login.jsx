@@ -1,9 +1,46 @@
 import React from "react"
 import { Form, Button } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 function Login() {
+    const [username, setUsername] = React.useState("")
+    const [password, setPassword] = React.useState("")
+    const navigate = useNavigate()
+
+    const handleChangeUsername = (e) => {
+        const value = e.target.value
+        setUsername(value)
+    }
+
+    const handleChangePassword = (e) => {
+        const value = e.target.value
+        setPassword(value)
+    }
+
     const logIn = (e) => {
         e.preventDefault()
-        console.log(e)
+        const data = {
+            username: username,
+            password: password,
+        }
+        const option = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify(data),
+        }
+        fetch("/api/login", option).then((response) => {
+            response.json().then((data) => {
+                if (data.msg === "successed") {
+                    navigate("/dashboard", {
+                        state: { username: username },
+                    })
+                } else {
+                    alert(data.msg)
+                }
+            })
+        })
     }
 
     return (
@@ -18,12 +55,20 @@ function Login() {
                     type="text"
                     placeholder="Enter your usename"
                     required
+                    value={username}
+                    onChange={handleChangeUsername}
                 />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" required />
+                <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    required
+                    value={password}
+                    onChange={handleChangePassword}
+                />
             </Form.Group>
 
             <Button variant="primary" type="submit">
