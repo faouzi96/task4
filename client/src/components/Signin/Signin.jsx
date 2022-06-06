@@ -1,5 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
+
 import { Form, Button } from "react-bootstrap"
 
 function controlField(username, email, password, password2) {
@@ -51,12 +52,14 @@ function Signin() {
 
     const signIn = (e) => {
         e.preventDefault()
+
         if (controlField(username, email, password, passwordConfirm)) {
             const data = {
                 username: username,
                 email: email,
                 password: password,
             }
+
             const option = {
                 method: "POST",
                 headers: {
@@ -64,11 +67,12 @@ function Signin() {
                 },
                 body: JSON.stringify(data),
             }
+
             fetch("/api/signin", option).then((response) => {
                 response.json().then((data) => {
                     if (data.msg === "successed") {
                         navigate("/dashboard", {
-                            state: { username: username },
+                            state: { username: username, id: data.id },
                         })
                     } else {
                         alert(data.msg)

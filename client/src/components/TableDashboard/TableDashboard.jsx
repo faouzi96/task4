@@ -1,4 +1,5 @@
 import React from "react"
+
 import { Table, Form } from "react-bootstrap"
 
 function TableDashboard({ users, setSelectedUsers }) {
@@ -7,27 +8,34 @@ function TableDashboard({ users, setSelectedUsers }) {
 
     React.useEffect(() => {
         const newUsers = []
+
         isChecked.forEach((item, index) => {
             if (item) newUsers.push(index)
         })
+
         setSelectedUsers((state) => {
             const newState = []
+
             newUsers.forEach((item) => {
-                newState.push(users[item].id)
+                if (users[item]) newState.push(users[item].id)
             })
+
             return newState
         })
-    }, [isChecked, setSelectedUsers, users])
+    }, [isChecked])
 
     const selectAll = (e) => {
         const checkAll = e.target.checked
+
         if (checkAll) setIsChecked(Array(isChecked.length).fill(true))
         else setIsChecked(Array(isChecked.length).fill(false))
     }
 
     const handleCheck = (index) => {
         const newState = isChecked.map((item, ind) => (ind === index ? !item : item))
+
         setIsChecked(newState)
+
         checkRef.current.checked = false
     }
 
@@ -36,12 +44,12 @@ function TableDashboard({ users, setSelectedUsers }) {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>UserName</th>
-                        <th>User Email</th>
-                        <th>Registration time</th>
-                        <th>Last Connection</th>
-                        <th>Status</th>
+                        <th className="text-center">ID</th>
+                        <th className="text-center">UserName</th>
+                        <th className="text-center">User Email</th>
+                        <th className="text-center">Registration time</th>
+                        <th className="text-center">Last Connection</th>
+                        <th className="text-center">Status</th>
                         <td className="d-flex justify-content-center">
                             <Form.Check
                                 type="checkbox"
@@ -56,12 +64,16 @@ function TableDashboard({ users, setSelectedUsers }) {
                     {users.map((user, index) => {
                         return (
                             <tr key={index}>
-                                <td>{user.id}</td>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{user.registrationDate}</td>
-                                <td>{user.lastConnection}</td>
-                                <td>{user.status}</td>
+                                <td className="text-center">{user.id}</td>
+                                <td className="text-center">{user.username}</td>
+                                <td className="text-center">{user.email}</td>
+                                <td className="text-center">
+                                    {user.registration_date}
+                                </td>
+                                <td className="text-center">
+                                    {user.last_connection}
+                                </td>
+                                <td className="text-center">{user.status}</td>
                                 <td className="d-flex justify-content-center">
                                     <Form.Check
                                         id={index.toString()}

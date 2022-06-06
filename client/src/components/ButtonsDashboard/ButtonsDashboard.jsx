@@ -11,6 +11,7 @@ function ButtonsDashboard({ setButtonsState }) {
             >
                 Block
             </Button>
+
             <Button
                 variant="primary"
                 className="ms-2"
@@ -18,6 +19,7 @@ function ButtonsDashboard({ setButtonsState }) {
             >
                 Unblock
             </Button>
+
             <Button
                 variant="danger"
                 className="ms-2"

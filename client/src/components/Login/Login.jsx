@@ -1,6 +1,8 @@
 import React from "react"
-import { Form, Button } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
+
+import { Form, Button } from "react-bootstrap"
+
 function Login() {
     const [username, setUsername] = React.useState("")
     const [password, setPassword] = React.useState("")
@@ -18,10 +20,12 @@ function Login() {
 
     const logIn = (e) => {
         e.preventDefault()
+
         const data = {
             username: username,
             password: password,
         }
+
         const option = {
             method: "POST",
             headers: {
@@ -30,11 +34,12 @@ function Login() {
             },
             body: JSON.stringify(data),
         }
+
         fetch("/api/login", option).then((response) => {
             response.json().then((data) => {
                 if (data.msg === "successed") {
                     navigate("/dashboard", {
-                        state: { username: username },
+                        state: { username: username, id: data.id },
                     })
                 } else {
                     alert(data.msg)
@@ -50,7 +55,7 @@ function Login() {
             </h1>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>User name</Form.Label>
+                <Form.Label>Username</Form.Label>
                 <Form.Control
                     type="text"
                     placeholder="Enter your usename"
