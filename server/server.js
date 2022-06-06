@@ -12,9 +12,9 @@ app.use(cors())
 
 var con = mysql.createConnection({
     host: "localhost",
-    user: "admin",
-    password: "mysql2022",
-    database: "testdb",
+    user: "USERNAME",
+    password: "PASSWORD",
+    database: "NAME_OF_YOUR_DB",
 })
 
 if (!con._connectCalled) con.connect()
